@@ -2,9 +2,8 @@
 <html lang="en">
 
 <head>
-    <title>Matkaklubi - kontakt</title>
+    <title>Matkaklubi - registreerumine</title>
     <%- include("../partials/pais.ejs") %>
-    <script src="kontakt.js"></script>
 </head>
 <body>
 <div class="container">
@@ -20,6 +19,11 @@
         </div>
 
     </div>
+    <h1>Registreeru matkale <%= matk.nimetus %> </h1>
+    <img class="registreerumine-pilt" src="<%= matk.pildiUrl %>" alt="">
+    <p>
+        <%= matk.kirjeldus %>
+    </p>
     <div class="row">
         <form action="#">
             <div class="form-group">
