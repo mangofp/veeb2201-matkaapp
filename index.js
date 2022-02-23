@@ -22,7 +22,7 @@ const matkad = [
   matk1, 
   matk2,
   {
-    id: 3,
+    id: 2,
     nimetus: "Matk Vändra metsades",
     kirjeldus: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore minima, nemo tempora rem corrupti sequi architecto eius fuga magnam temporibus dolor quam et, omnis illum officia fugit voluptatum perspiciatis! Est.",
     pildiUrl: "/assets/matkaja.png",  
