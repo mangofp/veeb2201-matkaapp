@@ -1,6 +1,14 @@
 const express = require('express')
+const { MongoClient } = require('mongodb')
 const path = require('path')
 const PORT = process.env.PORT || 5000
+
+
+const salasona = "HerneSupp12"
+const andmebaas = "matkaApp"
+const mongoUrl = `mongodb+srv://matka-app:${salasona}@cluster0.cm46p.mongodb.net/${andmebaas}?retryWrites=true&w=majority`
+
+const client = new MongoClient(mongoUrl)
 
 const matk1 = {
   id: 0,
@@ -79,7 +87,7 @@ function naitaRegistreerimist(req, res) {
   res.render('pages/registreerumine', {matk: matkad[index]})
 }
 
-function registreeriOsaleja(req, res) {
+async function registreeriOsaleja(req, res) {
   console.log("Serverisse saadeti parameetrid:")
   console.log(req.query)
 
@@ -110,6 +118,13 @@ function registreeriOsaleja(req, res) {
 
   console.log("Kõik matkajad:")
   console.log(matkajad)
+
+  await client.connect()
+  const database = client.db(andmebaas)
+  const registreerumised = database.collection("registreerumised")
+  const tulemus = await registreerumised.insertOne(uusMatkaja)
+  console.log("Lisati uus matkaja: " + tulemus.insertedId)
+
   res.render("pages/reg-kinnitus", {matk: matk})
 }
 
@@ -117,15 +132,19 @@ function tagastaMatkad(req, res) {
     res.send(matkad)
 }
 
-function tagastaOsalejad(req, res) {
+async function tagastaOsalejad(req, res) {
   let matkaIndeks = req.params.matk
-  let vastusMassiiv = []
-  for (i in matkajad) {
-    const osaleja = matkajad[i]
-    if (osaleja.id == matkaIndeks) {
-      vastusMassiiv.push(osaleja)
-    } 
+  await client.connect()
+  const database = client.db(andmebaas)
+  const registreerumised = database.collection("registreerumised")
+
+  const filter = {
+    id: matkaIndeks
   }
+
+  let vastusMassiiv = await registreerumised.find(filter).toArray()
+  client.close()
+
   res.send(vastusMassiiv)
 }
 
