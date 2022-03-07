@@ -48,12 +48,25 @@ async function naitaOsalejaid(matkaIndeks) {
         <div class="row">
             <div class="col-4">${osaleja.nimi}</div>
             <div class="col-8">${osaleja.email}</div>
-            <div class="col-12">${osaleja.markus}</div>
+            <div class="col-12">
+                ${osaleja.markus}
+                <a href="#" class="btn btn-link" onclick="kustutaOsaleja('${osaleja._id}')">
+                    Kustuta
+                </a>
+            </div>
         </div>
         `
     }
     const matkajadElement = document.getElementById("matka-andmed")
     matkajadElement.innerHTML = vastus
+}
+
+async function kustutaOsaleja(id) {
+    console.log("Kustuta: " + id)
+    let response = await fetch('/api/osaleja/' + id, {method: 'DELETE'})
+    tulemus = await response.json()
+    console.log(tulemus)
+    loeMatkad()
 }
 
 loeMatkad()
